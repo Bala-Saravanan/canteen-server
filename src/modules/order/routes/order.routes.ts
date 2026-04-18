@@ -4,6 +4,7 @@ import {
   myOrders,
   allOrders,
   patchOrderStatus,
+  notifyUser,
 } from "./../controllers";
 import {
   authMiddleware,
@@ -21,5 +22,6 @@ router.patch(
   roleMiddleware("admin"),
   patchOrderStatus,
 );
+router.post("/:id/notify", authMiddleware, roleMiddleware("admin"), notifyUser);
 
 export const orderRoutes = router;
