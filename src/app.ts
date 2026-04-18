@@ -6,9 +6,26 @@ import { errorHandler, notFound } from "./middlewares/error.middleware";
 
 const app = express();
 
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL || "http://localhost:3000",
+//     credentials: true,
+//   }),
+// );
+
+const allowedOrigins = process.env.CLIENT_URL?.split(",") || [
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
